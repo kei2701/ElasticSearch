@@ -4,7 +4,9 @@ import com.elasticsearch.ElasticSearch.dto.request.LoginRequest;
 import com.elasticsearch.ElasticSearch.dto.request.RegisterRequest;
 import com.elasticsearch.ElasticSearch.dto.response.GeneralResponse;
 import com.elasticsearch.ElasticSearch.entity.CustomUserDetails;
+import com.elasticsearch.ElasticSearch.security.JwtAuthenticator;
 import com.elasticsearch.ElasticSearch.security.JwtProvider;
+import com.elasticsearch.ElasticSearch.security.SecurityConfig;
 import com.elasticsearch.ElasticSearch.service.IAuthServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,48 +23,31 @@ import java.util.Map;
 public class AuthController {
 
     private final IAuthServices authServices;
-    private final AuthenticationManager authenticationManager;
-    private final JwtProvider jwtProvider;
+    private final JwtAuthenticator jwtAuthenticator;
 
-    public AuthController(IAuthServices authServices,
-                          AuthenticationManager authenticationManager,
-                          JwtProvider jwtProvider) {
+    public AuthController(IAuthServices authServices, JwtAuthenticator jwtAuthenticator) {
         this.authServices = authServices;
-        this.authenticationManager = authenticationManager;
-        this.jwtProvider = jwtProvider;
+        this.jwtAuthenticator = jwtAuthenticator;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) throws IOException {
-        if (!authServices.login(request.getUsername(), request.getPassword()))
+        if (!authServices.login(request.getUsername(), request.getPassword())) {
             return ResponseEntity.status(401).body(GeneralResponse.builder()
                     .success(false)
                     .message("Login failed!")
                     .statusCode(401)
                     .build());
+        }
 
-        return authenticate(request);
-    }
+        Map<String, String> result = jwtAuthenticator.authenticate(request);
 
-    private ResponseEntity<?> authenticate(LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        Map<String, String> result = jwtProvider.generateJwt(
-                (CustomUserDetails) authentication.getPrincipal()
-        );
         return ResponseEntity.ok(GeneralResponse.builder()
                 .success(true)
                 .message("Login success")
                 .data(result.get("token"))
                 .statusCode(200)
-                .build()
-        );
+                .build());
     }
 
     @PostMapping("/register")
