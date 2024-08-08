@@ -25,22 +25,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) throws IOException {
-        if (!authServices.login(request.getUsername(), request.getPassword())) {
-            return ResponseEntity.status(401).body(GeneralResponse.builder()
-                    .success(false)
-                    .message("Login failed!")
-                    .statusCode(401)
-                    .build());
-        }
-
-        Map<String, String> result = jwtAuthenticator.authenticate(request);
-
-        return ResponseEntity.ok(GeneralResponse.builder()
-                .success(true)
-                .message("Login success")
-                .data(result.get("token"))
-                .statusCode(200)
-                .build());
+        return jwtAuthenticator.authenticate(request);
     }
 
     @PostMapping("/register")
