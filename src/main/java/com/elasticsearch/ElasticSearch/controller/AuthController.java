@@ -3,16 +3,9 @@ package com.elasticsearch.ElasticSearch.controller;
 import com.elasticsearch.ElasticSearch.dto.request.LoginRequest;
 import com.elasticsearch.ElasticSearch.dto.request.RegisterRequest;
 import com.elasticsearch.ElasticSearch.dto.response.GeneralResponse;
-import com.elasticsearch.ElasticSearch.entity.CustomUserDetails;
 import com.elasticsearch.ElasticSearch.security.JwtAuthenticator;
-import com.elasticsearch.ElasticSearch.security.JwtProvider;
-import com.elasticsearch.ElasticSearch.security.SecurityConfig;
 import com.elasticsearch.ElasticSearch.service.IAuthServices;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;

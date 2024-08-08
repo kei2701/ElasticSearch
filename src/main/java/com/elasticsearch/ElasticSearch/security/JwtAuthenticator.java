@@ -15,8 +15,7 @@ public class JwtAuthenticator {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
 
-    public JwtAuthenticator(AuthenticationManager authenticationManager,
-                            JwtProvider jwtProvider) {
+    public JwtAuthenticator(AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
     }
