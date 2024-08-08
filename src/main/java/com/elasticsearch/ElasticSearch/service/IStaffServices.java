@@ -7,15 +7,13 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IStaffServices {
-    String indexStaff(Staff staff) throws IOException;
-
+//    String indexStaff(Staff staff) throws IOException;
     Staff getStaffById(String staffId) throws IOException;
-
-    String updateStaff(String staffId, UpdateStaffRequest request) throws IOException;
-
+    Staff getStaffByToken(String authorization) throws IOException;
+    String updateStaff(String authorization, UpdateStaffRequest request) throws IOException;
     List<Staff> searchStaffsByFullName(String searchText) throws IOException;
 
     List<Staff> getAllStaffs() throws IOException;
 
-    String deleteStaff(String staffId) throws IOException;
+//    String deleteStaff(String staffId) throws IOException;
 }
