@@ -33,8 +33,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtAuthenticationFilter JwtAuthenticationFilter() {
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
+    }
+
+    @Bean
+    public LoginFilter loginFilter() {
+        return new LoginFilter();
     }
 
     @Bean
@@ -60,7 +65,8 @@ public class SecurityConfig {
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

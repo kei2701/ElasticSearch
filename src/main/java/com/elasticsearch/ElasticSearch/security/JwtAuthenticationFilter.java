@@ -27,8 +27,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtProvider jwtProvider;
     @Autowired
     private CustomUserDetailsServicesImpl customUserDetailsServices;
-    @Autowired
-    private IAuthServices authServices;
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
@@ -46,17 +44,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         try {
-            String requestURI = request.getRequestURI();
-            if(requestURI.contains("/auth/login")) {
-                ObjectMapper objectMapper = new ObjectMapper();
-                Map<String, String> requestBody = objectMapper.readValue(request.getInputStream(), new TypeReference<>() {
-                });
-                String username = requestBody.get("username");
-                String password = requestBody.get("password");
-                if (!authServices.login(username, password)) {
-                    throw new AuthenticationException("Invalid login credentials!");
-                }
-            }
             String jwt = getJwtFromRequest(request);
             if (jwt != null && jwtProvider.validateAuthJwt(jwt)) {
                 String accountId = jwtProvider.getAccountIdFromJwt(jwt);
@@ -70,14 +57,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
             }
-        } catch (AuthenticationException ex) {
-            response.setStatus(403);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            PrintWriter out = response.getWriter();
-            out.print("{\"success\": false, \"message\": \"Invalid login credentials\", \"result\": \"Please login again!\", \"statusCode\": \"403\"}");
-            out.flush();
-            return;
         } catch (Exception ex) {
             response.setStatus(401);
             response.setContentType("application/json");
