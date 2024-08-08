@@ -6,6 +6,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class JwtProvider {
         return Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
     }
 
-    public Map<String, String> generateJwt(CustomUserDetails customUserDetails) {
+    public Map<String, String> generateJwt(CustomUserDetails customUserDetails) throws IOException {
         Date today = new Date();
         long JWT_EXPIRATION = 604800000L;
         Date expiredDate = new Date(today.getTime() + JWT_EXPIRATION);

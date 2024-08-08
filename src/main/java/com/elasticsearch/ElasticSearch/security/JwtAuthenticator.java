@@ -18,25 +18,14 @@ import java.util.Map;
 public class JwtAuthenticator {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
-    private final IAuthServices authServices;
 
     public JwtAuthenticator(AuthenticationManager authenticationManager,
-                            JwtProvider jwtProvider,
-                            IAuthServices authServices) {
+                            JwtProvider jwtProvider) {
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
-        this.authServices = authServices;
     }
 
-    public ResponseEntity<?> authenticate(LoginRequest request) throws IOException {
-        if (!authServices.login(request.getUsername(), request.getPassword())) {
-            return ResponseEntity.status(401).body(GeneralResponse.builder()
-                    .success(false)
-                    .message("Login failed!")
-                    .statusCode(401)
-                    .build());
-        }
-
+    public Map<String, String> authenticate(LoginRequest request) throws IOException {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -45,15 +34,6 @@ public class JwtAuthenticator {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        Map<String, String> result = jwtProvider.generateJwt(
-                (CustomUserDetails) authentication.getPrincipal()
-        );
-
-        return ResponseEntity.ok(GeneralResponse.builder()
-                .success(true)
-                .message("Login success")
-                .data(result.get("token"))
-                .statusCode(200)
-                .build());
+        return jwtProvider.generateJwt((CustomUserDetails) authentication.getPrincipal());
     }
 }

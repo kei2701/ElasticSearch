@@ -24,8 +24,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) throws IOException {
-        return jwtAuthenticator.authenticate(request);
+    public ResponseEntity<Object> login(@RequestBody LoginRequest request) throws IOException {
+        Map<String, String> result = jwtAuthenticator.authenticate(request);
+        return ResponseEntity.ok(GeneralResponse.builder()
+                .success(true)
+                .message("Login success")
+                .data(result.get("token"))
+                .statusCode(200)
+                .build());
     }
 
     @PostMapping("/register")
