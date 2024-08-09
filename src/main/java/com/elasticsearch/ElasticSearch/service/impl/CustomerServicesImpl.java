@@ -8,6 +8,8 @@ import com.elasticsearch.ElasticSearch.entity.Customer;
 import com.elasticsearch.ElasticSearch.service.IAuthServices;
 import com.elasticsearch.ElasticSearch.service.ICustomerServices;
 import com.elasticsearch.ElasticSearch.util.ElasticsearchClientUtil;
+import com.elasticsearch.ElasticSearch.util.IndexUtil;
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,6 +24,8 @@ public class CustomerServicesImpl implements ICustomerServices {
 
     @Override
     public Customer getCustomerByToken(String authorization) throws IOException {
+        if(!IndexUtil.checkIfIndexExists(Index.CUSTOMERS)) return null;
+
         Account account = authServices.findAccountByToken(authorization);
         GetRequest getRequest = new GetRequest.Builder()
                 .index(Index.CUSTOMERS)
@@ -38,6 +42,8 @@ public class CustomerServicesImpl implements ICustomerServices {
 
     @Override
     public Customer getCustomerById(String customerId) throws IOException {
+        if(!IndexUtil.checkIfIndexExists(Index.CUSTOMERS)) return null;
+
         GetRequest getRequest = new GetRequest.Builder()
                 .index(Index.CUSTOMERS)
                 .id(customerId)

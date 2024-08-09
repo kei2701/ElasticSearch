@@ -63,8 +63,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(antMatcher("/**/register"), antMatcher("/**/login")).permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(
+                                antMatcher("/**/register"),
+                                antMatcher("/**/login"),
+                                antMatcher("/**/posts")
+                        ).permitAll()
+                        .anyRequest()
+//                                .permitAll()
+                                .authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

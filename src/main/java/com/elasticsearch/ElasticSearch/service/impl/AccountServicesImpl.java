@@ -8,6 +8,7 @@ import com.elasticsearch.ElasticSearch.entity.Staff;
 import com.elasticsearch.ElasticSearch.service.IAccountServices;
 import com.elasticsearch.ElasticSearch.service.IStaffServices;
 import com.elasticsearch.ElasticSearch.util.ElasticsearchClientUtil;
+import com.elasticsearch.ElasticSearch.util.IndexUtil;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class AccountServicesImpl implements IAccountServices {
 
     @Override
     public Account getAccountById(String accountId) throws IOException {
+        if(!IndexUtil.checkIfIndexExists(Index.ACCOUNTS)) return null;
         GetRequest getRequest = new GetRequest.Builder()
                 .index(Index.ACCOUNTS)
                 .id(accountId)
@@ -39,6 +41,7 @@ public class AccountServicesImpl implements IAccountServices {
 
     @Override
     public List<Account> getAllAccounts() throws IOException {
+        if(!IndexUtil.checkIfIndexExists(Index.ACCOUNTS)) return null;
         SearchRequest searchRequest = new SearchRequest.Builder()
                 .index(Index.ACCOUNTS)
                 .query(q -> q.matchAll(m -> m))
@@ -53,6 +56,7 @@ public class AccountServicesImpl implements IAccountServices {
 
     @Override
     public String deleteAccount(String accountId) throws IOException {
+        if(!IndexUtil.checkIfIndexExists(Index.ACCOUNTS)) return null;
         Account account = getAccountById(accountId);
         Staff staff = staffServices.getStaffById(account.getUserId());
 

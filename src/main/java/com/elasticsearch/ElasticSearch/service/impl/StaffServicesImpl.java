@@ -9,6 +9,7 @@ import com.elasticsearch.ElasticSearch.entity.Staff;
 import com.elasticsearch.ElasticSearch.service.IAuthServices;
 import com.elasticsearch.ElasticSearch.service.IStaffServices;
 import com.elasticsearch.ElasticSearch.util.ElasticsearchClientUtil;
+import com.elasticsearch.ElasticSearch.util.IndexUtil;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -37,6 +38,8 @@ public class StaffServicesImpl implements IStaffServices {
 
     @Override
     public Staff getStaffById(String staffId) throws IOException {
+        if(!IndexUtil.checkIfIndexExists(Index.STAFFS)) return null;
+
         GetRequest getRequest = new GetRequest.Builder()
                 .index(Index.STAFFS)
                 .id(staffId)
@@ -52,6 +55,8 @@ public class StaffServicesImpl implements IStaffServices {
 
     @Override
     public Staff getStaffByToken(String authorization) throws IOException {
+        if(!IndexUtil.checkIfIndexExists(Index.STAFFS)) return null;
+
         Account account = authServices.findAccountByToken(authorization);
         GetRequest getRequest = new GetRequest.Builder()
                 .index(Index.STAFFS)
@@ -85,6 +90,8 @@ public class StaffServicesImpl implements IStaffServices {
 
     @Override
     public List<Staff> searchStaffsByFullName(String searchText) throws IOException {
+        if(!IndexUtil.checkIfIndexExists(Index.STAFFS)) return null;
+
         SearchRequest searchRequest = new SearchRequest.Builder()
                 .index(Index.STAFFS)
                 .query(q -> q.match(t -> t.field("fullName").query(searchText)))
@@ -98,6 +105,8 @@ public class StaffServicesImpl implements IStaffServices {
 
     @Override
     public List<Staff> getAllStaffs() throws IOException {
+        if(!IndexUtil.checkIfIndexExists(Index.STAFFS)) return null;
+
         SearchRequest searchRequest = new SearchRequest.Builder()
                 .index(Index.STAFFS)
                 .query(q -> q.matchAll(m -> m))

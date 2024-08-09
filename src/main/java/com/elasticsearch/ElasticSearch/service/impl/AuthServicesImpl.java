@@ -2,7 +2,6 @@ package com.elasticsearch.ElasticSearch.service.impl;
 
 import co.elastic.clients.elasticsearch.core.*;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import co.elastic.clients.transport.endpoints.BooleanResponse;
 import com.elasticsearch.ElasticSearch.constant.Index;
 import com.elasticsearch.ElasticSearch.constant.Role;
 import com.elasticsearch.ElasticSearch.dto.request.RegisterRequest;
@@ -12,6 +11,7 @@ import com.elasticsearch.ElasticSearch.entity.Staff;
 import com.elasticsearch.ElasticSearch.security.JwtProvider;
 import com.elasticsearch.ElasticSearch.service.IAuthServices;
 import com.elasticsearch.ElasticSearch.util.ElasticsearchClientUtil;
+import com.elasticsearch.ElasticSearch.util.IndexUtil;
 import org.apache.coyote.BadRequestException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -94,14 +94,8 @@ public class AuthServicesImpl implements IAuthServices {
         return response.id();
     }
 
-    public boolean checkIfAccountIndexExists() throws IOException {
-        BooleanResponse result = ElasticsearchClientUtil.createClient().indices()
-                .exists(e -> e.index(Index.ACCOUNTS));
-        return result.value();
-    }
-
     public Optional<Account> searchAccountByUsername(String searchText) throws IOException {
-        boolean exists = checkIfAccountIndexExists();
+        boolean exists = IndexUtil.checkIfIndexExists(Index.ACCOUNTS);
 
         if(!exists) {
             return Optional.empty();
@@ -121,6 +115,8 @@ public class AuthServicesImpl implements IAuthServices {
 
     @Override
     public Account findAccountByToken(String token) throws IOException {
+        if(!IndexUtil.checkIfIndexExists(Index.ACCOUNTS)) return null;
+
         token = token.substring(7);
         boolean isValid = false;
         try {
