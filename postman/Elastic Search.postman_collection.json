@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "1130c91a-0f34-402e-91e7-bdbc60b21c9b",
+		"_postman_id": "4ff9b8b8-6143-471c-8fa8-6720fe1082b5",
 		"name": "Elastic Search",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "27057623",
-		"_collection_link": "https://restless-water-658157.postman.co/workspace/Team-Workspace~41cfa5f1-41d1-4378-874e-75401d56aa09/collection/27057623-1130c91a-0f34-402e-91e7-bdbc60b21c9b?action=share&source=collection_link&creator=27057623"
+		"_exporter_id": "27057623"
 	},
 	"item": [
 		{
@@ -264,7 +263,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"quocbao_customer\",\r\n    \"password\": \"quocbao123\",\r\n    \"confirmPassword\": \"quocbao123\",\r\n    \"role\": \"CUSTOMER\",\r\n    \"fullName\": \"Nguyễn Quốc Bảo\",\r\n    \"address\":\"210 Lê Văn Thịnh\"\r\n}",
+							"raw": "{\r\n    \"username\":\"quocbao_customer_4\",\r\n    \"password\": \"quocbao123\",\r\n    \"confirmPassword\": \"quocbao123\",\r\n    \"role\": \"CUSTOMER\",\r\n    \"fullName\": \"Nguyễn Quốc Bảo\",\r\n    \"address\":\"210 Lê Văn Thịnh\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -304,7 +303,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"quocbao\",\r\n    \"password\": \"quocbao123\"\r\n}",
+							"raw": "{\"username\": \"quocbao\", \"password\": \"quocbao123\"}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -439,6 +438,40 @@
 							"path": [
 								"customers",
 								"c84208ed-c28d-4237-85d9-0cb0623919af"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Get All Posts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_LOCAL}}/posts",
+							"host": [
+								"{{HOST_LOCAL}}"
+							],
+							"path": [
+								"posts"
 							]
 						}
 					},
