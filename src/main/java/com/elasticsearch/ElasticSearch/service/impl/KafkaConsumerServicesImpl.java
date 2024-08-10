@@ -7,7 +7,6 @@ import com.elasticsearch.ElasticSearch.constant.Topic;
 import com.elasticsearch.ElasticSearch.entity.Post;
 import com.elasticsearch.ElasticSearch.service.IKafkaConsumerServices;
 import com.elasticsearch.ElasticSearch.util.ElasticsearchClientUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Service
 public class KafkaConsumerServicesImpl implements IKafkaConsumerServices {
 
-    @KafkaListener(topics = Topic.POSTS, groupId = "${kafka.consumer.group-id}")
+//    @KafkaListener(topics = Topic.POSTS, groupId = "${kafka.consumer.group-id}")
     public void consumeAndCreatePost(String message) throws IOException {
         String id = UUID.randomUUID().toString();
         Post post = new ObjectMapper().readValue(message, Post.class);

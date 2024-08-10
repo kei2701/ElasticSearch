@@ -478,6 +478,107 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Province",
+			"item": [
+				{
+					"name": "Save Provinces",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_LOCAL}}/provinces",
+							"host": [
+								"{{HOST_LOCAL}}"
+							],
+							"path": [
+								"provinces"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Provinces",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_LOCAL}}/provinces",
+							"host": [
+								"{{HOST_LOCAL}}"
+							],
+							"path": [
+								"provinces"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "String",
+			"item": [
+				{
+					"name": "Validate String",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST_LOCAL}}/string/validate-string?stringNumber=8739347532",
+							"host": [
+								"{{HOST_LOCAL}}"
+							],
+							"path": [
+								"string",
+								"validate-string"
+							],
+							"query": [
+								{
+									"key": "stringNumber",
+									"value": "8739347532"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
